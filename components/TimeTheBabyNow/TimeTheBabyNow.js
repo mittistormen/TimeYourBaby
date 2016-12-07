@@ -49,21 +49,28 @@ class TimeTheBabyNow extends Component {
     clearInterval(this.timer)
   }
 
-  _startDoingSomething (action) {
+  _startDoingSomething (action, boob) {
     const timerStarted = Date.now()
-    this.setState({isTimingTheBaby: true, timerStarted: timerStarted, action: action})
+    const timing = {isTimingTheBaby: true, timerStarted: timerStarted, action: action, timeElapsed: this._formatTime(timerStarted, Date.now())}
+
+    if (boob)
+    {
+      timing.boob = boob
+    } 
+
+    this.setState(timing)
 
     this.timer = setInterval(
       () => { 
         let timeElapsed = this._formatTime(timerStarted, Date.now());
         this.setState({timeElapsed: timeElapsed});
       },
-      1000
+      500
     );
   }
   
-  _onPressButtonStartBreastFeeding () {
-    this._startDoingSomething('Breastfeeding')
+  _onPressButtonStartBreastFeeding (boob) {
+    this._startDoingSomething('Breastfeeding', boob)
   }
 
   _onPressButtonStartSleeping () {
@@ -75,37 +82,44 @@ class TimeTheBabyNow extends Component {
   }
 
   render() {
-    if (this.state.isTimingTheBaby) {
-      return (
-        <View>
-          <TouchableHighlight onPress={this._onPressButtonStop} style={styles.button}>
-            <Text>Stop timing</Text>
+    return (
+      <View>
+        {this.state.isTimingTheBaby ? (
+          <View>
+            <TouchableHighlight onPress={this._onPressButtonStop} style={styles.button}>
+              <Text>Stop timing</Text>
+            </TouchableHighlight>
+            <Text style={styles.elapsed}>{this.state.action} for {this.state.timeElapsed}</Text>
+          </View>
+        ) : (
+          <View></View>
+        )}
+        <View style={styles.buttons}>
+          <TouchableHighlight onPress={()=>this._onPressButtonStartBreastFeeding('Left')} style={styles.button}>
+            <Text>Lefty</Text>
           </TouchableHighlight>
-          <Text style={styles.elapsed}>{this.state.action} for {this.state.timeElapsed}</Text>
-        </View>
-      )
-    } else {
-      return (
-        <View>
-          <TouchableHighlight onPress={this._onPressButtonStartBreastFeeding} style={styles.button}>
-            <Text>Start breastfeeding</Text>
+          <TouchableHighlight onPress={()=>this._onPressButtonStartBreastFeeding('Right')} style={styles.button}>
+            <Text>Righty</Text>
           </TouchableHighlight>
           <TouchableHighlight onPress={this._onPressButtonStartSleeping} style={styles.button}>
-            <Text>Start sleeping</Text>
+            <Text>Sleepy</Text>
           </TouchableHighlight>
           <TouchableHighlight onPress={this._onPressButtonStartDancing} style={styles.button}>
-            <Text>Start dancing</Text>
+            <Text>Dancer</Text>
           </TouchableHighlight>
         </View>
-      )
-    }
+      </View>
+    )
   }
 }
 
 const styles = StyleSheet.create({
+  buttons: {
+    flexDirection:'row'
+  },
   button: {
     alignItems: 'center',
-    marginBottom:10
+    margin:10
   },
   elapsed: {
     alignItems: 'center',

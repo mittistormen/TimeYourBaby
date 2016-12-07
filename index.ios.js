@@ -28,7 +28,16 @@ export default class TimeYourBaby extends Component {
       .getItem('timings')
       .then((value) => {
         const timings = JSON.parse(value) || []
-        this.setState({timings:timings})
+
+        const clean = timings.filter(function(timing) {
+          return timing && timing.action && timing.startTime && timing.endTime && timing.timeElapsed;
+        })
+
+        AsyncStorage.setItem("timings", JSON.stringify(clean))
+
+        this.setState({
+          timings: timings
+        })
       })
       .done()
 

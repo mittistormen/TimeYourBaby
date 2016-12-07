@@ -22,6 +22,12 @@ class TimingList extends Component {
 
     return date.format('lll')
   }
+  
+  _formatElapsedTime(dateString) {
+    const date = moment(dateString)
+
+    return date.format('HH:mm:ss')
+  }
 
   render() {
     const timings = this.props.timings || []
@@ -29,9 +35,12 @@ class TimingList extends Component {
 
     let totaltime = 0;
     if (timings.length > 0) {
-      totaltime = timings.reduce((t1,t2) => { 
-        return new Date(t1.endTime - t1.startTime) + new Date(t2.endTime - t2.startTime)
-      })
+      totaltime = timings.reduce((t1,t2) => {
+        if (t2.startTime && t2.endTime) {
+          return new Date(t1).getTime() + new Date(t2.endTime - t2.startTime).getTime()
+        }
+        return t1;
+      }, 0)
     }
 
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -40,12 +49,12 @@ class TimingList extends Component {
     return (
       <View style={styles.list}>
         <Text style={styles.h2}>
-          Total time: {totaltime}
+          Total time: {this._formatElapsedTime(totaltime)}
         </Text>
 
         <ListView
           dataSource={source}
-          renderRow={(data) => <Text>{this._formatDate(data.startTime)}: {data.action} for {data.timeElapsed}</Text>}
+          renderRow={(data) => <Text>{this._formatDate(data.startTime)} {data.action} for {data.timeElapsed}</Text>}
         />
       </View>
     );
