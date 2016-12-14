@@ -7,6 +7,12 @@ import {
   AsyncStorage
 } from 'react-native'
 
+const MK = require('react-native-material-kit');
+const {
+  MKButton,
+  MKColor,
+} = MK;
+
 class TimeTheBabyNow extends Component {
   constructor(props) {
     super(props)
@@ -95,18 +101,18 @@ class TimeTheBabyNow extends Component {
           <View></View>
         )}
         <View style={styles.buttons}>
-          <TouchableHighlight onPress={()=>this._onPressButtonStartBreastFeeding('Left')} style={styles.button}>
+          <StartTimingButton onPress={()=>this._onPressButtonStartBreastFeeding('Left')}>
             <Text>Lefty</Text>
-          </TouchableHighlight>
-          <TouchableHighlight onPress={()=>this._onPressButtonStartBreastFeeding('Right')} style={styles.button}>
+          </StartTimingButton>
+          <StartTimingButton onPress={()=>this._onPressButtonStartBreastFeeding('Right')}>
             <Text>Righty</Text>
-          </TouchableHighlight>
-          <TouchableHighlight onPress={this._onPressButtonStartSleeping} style={styles.button}>
+          </StartTimingButton>
+          <StartTimingButton onPress={this._onPressButtonStartSleeping}>
             <Text>Sleepy</Text>
-          </TouchableHighlight>
-          <TouchableHighlight onPress={this._onPressButtonStartDancing} style={styles.button}>
+          </StartTimingButton>
+          <StartTimingButton onPress={this._onPressButtonStartDancing}>
             <Text>Dancer</Text>
-          </TouchableHighlight>
+          </StartTimingButton>
         </View>
       </View>
     )
@@ -119,12 +125,16 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
-    margin:10
+    margin:5
   },
   elapsed: {
     alignItems: 'center',
     marginBottom:10
   }
 });
+
+const StartTimingButton = MKButton.accentColoredButton()
+  .withStyle(styles.button)
+  .build();
 
 module.exports = TimeTheBabyNow

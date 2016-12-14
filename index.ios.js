@@ -61,6 +61,9 @@ export default class TimeYourBaby extends Component {
         <Text style={styles.h1}>
           Time your baby!
         </Text>
+        <Text style={styles.instructions}>
+          Don't try this at home
+        </Text>
         <TimeTheBabyNow save={this.saveTiming}></TimeTheBabyNow>
         <TimingList timings={this.state.timings}></TimingList>
         <Text style={styles.instructions}>
@@ -77,15 +80,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF'
+    backgroundColor: '#fff',
+    borderColor:'#000'
   },
   h1: {
     fontSize: 20,
-    textAlign: 'center',
+    textAlign: 'left',
     margin: 10
   },
   instructions: {
-    textAlign: 'center',
+    textAlign: 'left',
     color: '#333333',
     marginBottom: 5
   }
