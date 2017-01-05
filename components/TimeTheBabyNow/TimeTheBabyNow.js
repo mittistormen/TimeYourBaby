@@ -11,6 +11,7 @@ const MK = require('react-native-material-kit');
 const {
   MKButton,
   MKColor,
+  MKProgress
 } = MK;
 
 class TimeTheBabyNow extends Component {
@@ -33,7 +34,7 @@ class TimeTheBabyNow extends Component {
       timeElapsed = timeDiff.getMinutes() + ' minutes and '
     }
 
-    if (timeDiff.getSeconds() > 0) {
+    if (timeDiff.getSeconds() > -1) {
       timeElapsed += timeDiff.getSeconds() + ' seconds'
     }
 
@@ -56,6 +57,10 @@ class TimeTheBabyNow extends Component {
   }
 
   _startDoingSomething (action, boob) {
+    if (this.state.isTimingTheBaby) {
+      this._onPressButtonStop()
+    }
+
     const timerStarted = Date.now()
     const timing = {isTimingTheBaby: true, timerStarted: timerStarted, action: action, timeElapsed: this._formatTime(timerStarted, Date.now())}
 
@@ -64,15 +69,18 @@ class TimeTheBabyNow extends Component {
       timing.boob = boob
     } 
 
-    this.setState(timing)
+    let scope = this;
+    let updateTimer = function() {
+        timing.timeElapsed = scope._formatTime(timerStarted, Date.now());
+        scope.setState(timing);
+    }
 
     this.timer = setInterval(
-      () => { 
-        let timeElapsed = this._formatTime(timerStarted, Date.now());
-        this.setState({timeElapsed: timeElapsed});
-      },
-      500
+      updateTimer,
+      1000
     );
+
+    updateTimer()
   }
   
   _onPressButtonStartBreastFeeding (boob) {
@@ -92,28 +100,35 @@ class TimeTheBabyNow extends Component {
       <View>
         {this.state.isTimingTheBaby ? (
           <View>
-            <TouchableHighlight onPress={this._onPressButtonStop} style={styles.button}>
-              <Text>Stop timing</Text>
-            </TouchableHighlight>
-            <Text style={styles.elapsed}>{this.state.action} for {this.state.timeElapsed}</Text>
+            <Text style={styles.instructions}>{this.state.action} for {this.state.timeElapsed}</Text>
+            <MKProgress.Indeterminate
+              style={styles.progress}
+              color={MKColor.Pink} />
+            <TimingButton onPress={this._onPressButtonStop}>
+              <Text>Done</Text>
+            </TimingButton>
           </View>
         ) : (
-          <View></View>
-        )}
-        <View style={styles.buttons}>
-          <StartTimingButton onPress={()=>this._onPressButtonStartBreastFeeding('Left')}>
-            <Text>Lefty</Text>
-          </StartTimingButton>
-          <StartTimingButton onPress={()=>this._onPressButtonStartBreastFeeding('Right')}>
-            <Text>Righty</Text>
-          </StartTimingButton>
-          <StartTimingButton onPress={this._onPressButtonStartSleeping}>
-            <Text>Sleepy</Text>
-          </StartTimingButton>
-          <StartTimingButton onPress={this._onPressButtonStartDancing}>
-            <Text>Dancer</Text>
-          </StartTimingButton>
+        <View>
+          <Text style={styles.instructions}>
+            Don't try this at home
+          </Text>
+          <View style={styles.buttons}>
+            <TimingButton onPress={()=>this._onPressButtonStartBreastFeeding('Left')}>
+              <Text>Lefty</Text>
+            </TimingButton>
+            <TimingButton onPress={()=>this._onPressButtonStartBreastFeeding('Right')}>
+              <Text>Righty</Text>
+            </TimingButton>
+            <TimingButton onPress={this._onPressButtonStartSleeping}>
+              <Text>Sleepy</Text>
+            </TimingButton>
+            <TimingButton onPress={this._onPressButtonStartDancing}>
+              <Text>Dancer</Text>
+            </TimingButton>
+          </View>
         </View>
+        )}
       </View>
     )
   }
@@ -121,20 +136,28 @@ class TimeTheBabyNow extends Component {
 
 const styles = StyleSheet.create({
   buttons: {
-    flexDirection:'row'
+    flexDirection:'row',
+    marginTop:10
   },
   button: {
-    alignItems: 'center',
     margin:5
   },
-  elapsed: {
-    alignItems: 'center',
-    marginBottom:10
+  instructions: {
+    textAlign: 'center',
+    marginBottom:5
+  },
+  progress: {
+    width:300,
+    height:10
   }
 });
 
-const StartTimingButton = MKButton.accentColoredButton()
+const TimingButton = MKButton.accentColoredButton()
   .withStyle(styles.button)
   .build();
+
+// const ProgressBar = MKProgress.indeterminate()
+//   .withStyle()
+//   .build();
 
 module.exports = TimeTheBabyNow

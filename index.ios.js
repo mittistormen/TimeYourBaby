@@ -61,9 +61,6 @@ export default class TimeYourBaby extends Component {
         <Text style={styles.h1}>
           Time your baby!
         </Text>
-        <Text style={styles.instructions}>
-          Don't try this at home
-        </Text>
         <TimeTheBabyNow save={this.saveTiming}></TimeTheBabyNow>
         <TimingList timings={this.state.timings}></TimingList>
         <Text style={styles.instructions}>
