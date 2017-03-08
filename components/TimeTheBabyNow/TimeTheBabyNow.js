@@ -94,12 +94,9 @@ class TimeTheBabyNow extends Component {
         {this.state.isTimingTheBaby ? (
           <View>
             <Text style={styles.instructions}>{this.state.action} for {this.state.timeElapsed}</Text>
-            <MKProgress.Indeterminate
-              style={styles.progress}
-              color={MKColor.Pink} />
-            <TimingButton onPress={this._onPressButtonStop}>
+            <TouchableHighlight onPress={this._onPressButtonStop}>
               <Text>Done</Text>
-            </TimingButton>
+            </TouchableHighlight>
           </View>
         ) : (
           <View></View>
@@ -118,7 +115,6 @@ class TimeTheBabyNow extends Component {
             <Text>Dancer</Text>
           </TouchableHighlight>
         </View>
-        )}
       </View>
     )
   }
