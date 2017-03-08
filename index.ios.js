@@ -77,16 +77,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    borderColor:'#000'
+    backgroundColor: '#F5FCFF'
   },
   h1: {
     fontSize: 20,
-    textAlign: 'left',
+    textAlign: 'center',
     margin: 10
   },
   instructions: {
-    textAlign: 'left',
+    textAlign: 'center',
     color: '#333333',
     marginBottom: 5
   }

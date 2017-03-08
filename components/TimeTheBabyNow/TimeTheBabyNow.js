@@ -7,13 +7,6 @@ import {
   AsyncStorage
 } from 'react-native'
 
-const MK = require('react-native-material-kit');
-const {
-  MKButton,
-  MKColor,
-  MKProgress
-} = MK;
-
 class TimeTheBabyNow extends Component {
   constructor(props) {
     super(props)
@@ -109,24 +102,21 @@ class TimeTheBabyNow extends Component {
             </TimingButton>
           </View>
         ) : (
-        <View>
-          <Text style={styles.instructions}>
-            Don't try this at home
-          </Text>
-          <View style={styles.buttons}>
-            <TimingButton onPress={()=>this._onPressButtonStartBreastFeeding('Left')}>
-              <Text>Lefty</Text>
-            </TimingButton>
-            <TimingButton onPress={()=>this._onPressButtonStartBreastFeeding('Right')}>
-              <Text>Righty</Text>
-            </TimingButton>
-            <TimingButton onPress={this._onPressButtonStartSleeping}>
-              <Text>Sleepy</Text>
-            </TimingButton>
-            <TimingButton onPress={this._onPressButtonStartDancing}>
-              <Text>Dancer</Text>
-            </TimingButton>
-          </View>
+          <View></View>
+        )}
+        <View style={styles.buttons}>
+          <TouchableHighlight onPress={()=>this._onPressButtonStartBreastFeeding('Left')} style={styles.button}>
+            <Text>Lefty</Text>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={()=>this._onPressButtonStartBreastFeeding('Right')} style={styles.button}>
+            <Text>Righty</Text>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={this._onPressButtonStartSleeping} style={styles.button}>
+            <Text>Sleepy</Text>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={this._onPressButtonStartDancing} style={styles.button}>
+            <Text>Dancer</Text>
+          </TouchableHighlight>
         </View>
         )}
       </View>
@@ -140,7 +130,8 @@ const styles = StyleSheet.create({
     marginTop:10
   },
   button: {
-    margin:5
+    alignItems: 'center',
+    margin:10
   },
   instructions: {
     textAlign: 'center',
@@ -151,13 +142,5 @@ const styles = StyleSheet.create({
     height:10
   }
 });
-
-const TimingButton = MKButton.accentColoredButton()
-  .withStyle(styles.button)
-  .build();
-
-// const ProgressBar = MKProgress.indeterminate()
-//   .withStyle()
-//   .build();
 
 module.exports = TimeTheBabyNow
